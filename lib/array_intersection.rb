@@ -1,6 +1,6 @@
 # Returns a new array to that contains elements in the intersection of the two input arrays
-# Time complexity: O(n * m) (where n is the length of the shorter array and m is the length of the longer array)
-# Space complexity: O(n) if n < m (where n is the length of the shorter array and m is the length of the longer array)
+# Time complexity: O(n) + O(m) = O(n + m) (where n is the length of the shorter array and m is the length of the longer array)
+# Space complexity: O(2n) = O(n) if n < m (where n is the length of the shorter array and m is the length of the longer array)
 
 def intersection(array1, array2)
   if array1 == nil || array2 == nil
@@ -14,20 +14,21 @@ def intersection(array1, array2)
       larger_array = array1
     end
 
-    i = 0
-    intersection_array = []
+    intersection_array = [] # s.c = O(n)
+    small_hash = Hash.new() # s.c = O(n)
 
-    while i < smaller_array.length
-      j = 0
-      while j < larger_array.length
-        if smaller_array[i] == larger_array[j]
-          intersection_array << smaller_array[i]
-        end
-        j += 1
-      end
-      i += 1
+    # t.c. = O(n)
+    smaller_array.each do |num|
+      small_hash[num] = 1
     end
-  end
 
-  return intersection_array
+    # t.c. = O(m)
+    larger_array.each do |num|
+      if small_hash.include? num
+        intersection_array << num
+      end
+    end
+
+    return intersection_array
+  end
 end
